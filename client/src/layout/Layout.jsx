@@ -8,7 +8,7 @@ const Layout = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 bg-fixed relative">
       {/* Imagen de fondo con overlay */}
       <div 
-        className="fixed inset-0 opacity-5 pointer-events-none"
+        className="fixed inset-0 opacity-80 pointer-events-none"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80)',
           backgroundSize: 'cover',
