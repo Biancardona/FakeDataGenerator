@@ -6,94 +6,129 @@ const SettingForm = ({
   seed,
   handleSeedChange,
   handleRandomSeed,
+  totalRecords,
+  handleTotalRecordsChange,
 }) => {
   const convertErrorsToInputRange = (errors) => {
     return (errors / 10) * 1000;
   };
 
-  // Convert errors from input range (0-1000) to slider range (0-10)
   const convertErrorsToSliderRange = (sliderValue) => {
     return (sliderValue / 1000) * 10;
   };
 
-  // Handle number input change
   const handleNumberInputChange = (e) => {
     const inputValue = parseFloat(e.target.value);
     handleErrorsInputChange(inputValue);
   };
 
-  // Handle slider change
   const handleSliderChange = (e) => {
     const sliderValue = parseFloat(e.target.value);
     handleErrorsInputChange(convertErrorsToInputRange(sliderValue));
   };
+
   return (
-    <div className='w-full mb-4 flex flex-wrap justify-between items-center'>
-      <div className='w-full items-center flex flex-wrap space-x-4'>
-        <div className='flex items-center'>
-          <label className='mr-2'>Region:</label>
+    <div className='bg-white rounded-lg shadow-md p-6 space-y-4'>
+      <h3 className='text-lg font-bold text-purple-900 mb-4 flex items-center gap-2'>
+        ⚙️ Configuración de Generación
+      </h3>
+      
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+        {/* Región */}
+        <div className='flex flex-col'>
+          <label className='text-sm font-semibold text-gray-700 mb-2'>
+            🌍 Región:
+          </label>
           <select
             value={region}
             onChange={handleRegionChange}
-            className='mr-4 border border-gray-300 rounded px-2 py-1 w-full md:w-auto'
+            className='border-2 border-purple-200 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none transition-colors'
           >
-            <option value='Poland'>Poland</option>
-            <option value='USA'>USA</option>
-            <option value='Germany'>Germany</option>
+            <option value='Poland'>🇵🇱 Polonia</option>
+            <option value='USA'>🇺🇸 Estados Unidos</option>
+            <option value='Germany'>🇩🇪 Alemania</option>
           </select>
-          <div className='flex items-center'>
-            <label className='mr-2'>Errors:</label>
-            <input
-              type='range'
-              value={convertErrorsToSliderRange(errors)}
-              onChange={handleSliderChange}
-              className='ml-4'
-              min={0}
-              max={10}
-              step={0.1}
-            />
-            <input
-              type='number'
-              value={errors}
-              onChange={handleNumberInputChange}
-              className='border border-gray-300 rounded px-2 py-1 w-20'
-              min={0}
-              max={1000}
-              step={0.1}
-            />
-          </div>
+        </div>
 
-          <label className='mr-2'>Seed:</label>
+        {/* Total de registros */}
+        <div className='flex flex-col'>
+          <label className='text-sm font-semibold text-gray-700 mb-2'>
+            📊 Total de registros:
+          </label>
           <input
             type='number'
-            value={seed}
-            onChange={handleSeedChange}
-            className='mr-4 border border-gray-300 rounded px-2 py-1 w-full md:w-auto'
+            value={totalRecords}
+            onChange={handleTotalRecordsChange}
+            className='border-2 border-purple-200 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none transition-colors'
+            min={20}
+            max={1000}
+            step={20}
           />
-
-          <button
-            onClick={handleRandomSeed}
-            className='bg-gray-200 px-4 py-2 rounded flex items-center justify-center ml-2'
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              className='w-5 h-5'
-            >
-              <polyline points='23 4 23 10 17 10'></polyline>
-              <polyline points='1 20 1 14 7 14'></polyline>
-              <line x1='20' y1='4' x2='23' y2='4'></line>
-              <line x1='1' y1='20' x2='4' y2='20'></line>
-              <line x1='23' y1='10' x2='17' y2='4'></line>
-              <line x1='7' y1='20' x2='1' y2='14'></line>
-            </svg>
-          </button>
+          <span className='text-xs text-gray-500 mt-1'>
+            Mínimo: 20, Máximo: 1000
+          </span>
         </div>
+
+        {/* Seed */}
+        <div className='flex flex-col'>
+          <label className='text-sm font-semibold text-gray-700 mb-2'>
+            🎲 Semilla (Seed):
+          </label>
+          <div className='flex gap-2'>
+            <input
+              type='number'
+              value={seed}
+              onChange={handleSeedChange}
+              className='flex-1 border-2 border-purple-200 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none transition-colors'
+            />
+            <button
+              onClick={handleRandomSeed}
+              className='bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg'
+              title='Generar semilla aleatoria'
+            >
+              🔄
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Control de errores - Línea completa */}
+      <div className='flex flex-col'>
+        <label className='text-sm font-semibold text-gray-700 mb-2'>
+          ⚠️ Nivel de Errores:
+        </label>
+        <div className='flex items-center gap-4'>
+          <input
+            type='range'
+            value={convertErrorsToSliderRange(errors)}
+            onChange={handleSliderChange}
+            className='flex-1 h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer slider-thumb'
+            min={0}
+            max={10}
+            step={0.1}
+          />
+          <input
+            type='number'
+            value={errors}
+            onChange={handleNumberInputChange}
+            className='w-24 border-2 border-purple-200 rounded-lg px-3 py-2 focus:border-purple-500 focus:outline-none transition-colors'
+            min={0}
+            max={1000}
+            step={0.1}
+          />
+        </div>
+        <div className='flex justify-between text-xs text-gray-500 mt-1'>
+          <span>Sin errores (0)</span>
+          <span>Ruido total (1000)</span>
+        </div>
+      </div>
+
+      {/* Información adicional */}
+      <div className='bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mt-4'>
+        <p className='text-sm text-gray-700'>
+          💡 <strong>Tip:</strong> Los datos se generan con la configuración actual. 
+          Cambia cualquier parámetro para regenerar todos los datos automáticamente.
+        </p>
       </div>
     </div>
   );
